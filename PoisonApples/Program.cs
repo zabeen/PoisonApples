@@ -34,20 +34,21 @@ namespace PoisonApples
 
         static int MaxCountOfSuccessiveNonPoisonedRedApples(ref List<ApplePoisoner.Apple> apples)
         {
-            int maxCount = 0;
+            List<List<ApplePoisoner.Apple>> subLists = new List<List<ApplePoisoner.Apple>>();
 
             for (int i = 0; i < apples.Count;)
             {
-                int currentCount = 0;
+                List<ApplePoisoner.Apple> subList = new List<ApplePoisoner.Apple>();
                 if (!apples[i].Poisoned && apples[i].Colour == "Red")
-                    currentCount = apples.Skip(i).TakeWhile(a => !a.Poisoned && a.Colour == "Red").Count();
-
-                maxCount = (currentCount > maxCount) ? currentCount : maxCount;
-
-                i = i + currentCount + 1;
+                {
+                    subList = apples.Skip(i).TakeWhile(a => !a.Poisoned && a.Colour == "Red").ToList();
+                    subLists.Add(subList);
+                }
+                
+                i = i + subList.Count + 1;
             }
 
-            return maxCount;
+            return subLists.Max(s => s.Count);
         }
     }
 }
