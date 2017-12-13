@@ -15,7 +15,14 @@ namespace PoisonApples
 
             Console.WriteLine($"No. of poisoned apples: {apples.Count(a => a.Poisoned)}");
 
-            Console.WriteLine($"Second most common colour of poisoned apples: {apples.Where(a => a.Poisoned).GroupBy(a => a.Colour).OrderByDescending(c => c.Count()).ElementAt(1).Key}");
+            var nextColour = apples
+                .Where(a => a.Poisoned)
+                .GroupBy(a => a.Colour)
+                .OrderByDescending(c => c.Count())
+                .SkipWhile(c => c.Key == "Red")
+                .First()
+                .Key;
+            Console.WriteLine($"Next most common colour of poisoned apples after Red: {nextColour}");
 
             Console.WriteLine($"Max. no. of non-poisoned Red apples picked in succession: {MaxCountSuccessiveRedNonPoisonedApples(ref apples)}");
 
