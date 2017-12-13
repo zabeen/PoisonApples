@@ -24,7 +24,7 @@ namespace PoisonApples
                 .Key;
             Console.WriteLine($"Next most common colour of poisoned apples after Red: {nextColour}");
 
-            Console.WriteLine($"Max. no. of non-poisoned Red apples picked in succession: {MaxCountSuccessiveRedNonPoisonedApples(ref apples)}");
+            Console.WriteLine($"Max. no. of non-poisoned Red apples picked in succession: {MaxCountOfSuccessiveNonPoisonedRedApples(ref apples)}");
 
             Console.WriteLine($"Times two green apples picked in a row: {apples.Skip(1).Count(a => a.Colour == "Green" && apples[apples.IndexOf(a)-1].Colour == "Green")}");
 
@@ -32,7 +32,7 @@ namespace PoisonApples
         }
 
 
-        static int MaxCountSuccessiveRedNonPoisonedApples(ref List<ApplePoisoner.Apple> apples)
+        static int MaxCountOfSuccessiveNonPoisonedRedApples(ref List<ApplePoisoner.Apple> apples)
         {
             int maxCount = 0;
 
