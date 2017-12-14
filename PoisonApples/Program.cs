@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PoisonApples
 {
@@ -57,6 +55,5 @@ namespace PoisonApples
 
             Console.WriteLine($"Times two green apples picked in a row: {count}");
         }
-
     }
 }
