@@ -13,23 +13,50 @@ namespace PoisonApples
             var poisoner = new ApplePoisoner();
             var apples = poisoner.PickApples().Take(10000).ToList();
 
-            Console.WriteLine($"No. of poisoned apples: {apples.Count(a => a.Poisoned)}");
+            WritePoisonedCount(apples);
+            WriteNextMostCommonColour(apples);
+            WriteSuccessivePickedMaxCount(apples);
+            WriteTwoGreenPickedCount(apples);
 
-            var nextColour = apples
+            Console.ReadLine();
+        }
+
+        private static void WritePoisonedCount(List<ApplePoisoner.Apple> apples)
+        {
+            Console.WriteLine($"No. of poisoned apples: {apples.Count(a => a.Poisoned)}");
+        }
+
+        private static void WriteNextMostCommonColour(List<ApplePoisoner.Apple> apples)
+        {
+            var colour = apples
                 .Where(a => a.Poisoned)
                 .GroupBy(a => a.Colour)
                 .OrderByDescending(c => c.Count())
                 .SkipWhile(c => c.Key == "Red")
                 .First()
                 .Key;
-            Console.WriteLine($"Next most common colour of poisoned apples after Red: {nextColour}");
 
-            Func<ApplePoisoner.Apple, bool> filter = a => !a.Poisoned && a.Colour == "Red";
-            Console.WriteLine($"Max. no. of non-poisoned Red apples picked in succession: {apples.Where(filter).Select(a => apples.Skip(apples.IndexOf(a)).TakeWhile(filter).Count()).Max()}");
-
-            Console.WriteLine($"Times two green apples picked in a row: {apples.Skip(1).Count(a => a.Colour == "Green" && apples[apples.IndexOf(a)-1].Colour == "Green")}");
-
-            Console.ReadLine();
+            Console.WriteLine($"Next most common colour of poisoned apples after Red: {colour}");
         }
+
+        private static void WriteSuccessivePickedMaxCount(List<ApplePoisoner.Apple> apples)
+        {
+            var count = apples
+                .Select((a, i) => apples.Skip(i).TakeWhile(app => !app.Poisoned && app.Colour == "Red").Count())
+                .Max();
+
+            Console.WriteLine($"Max. no. of non-poisoned Red apples picked in succession: {count}");
+        }
+
+        private static void WriteTwoGreenPickedCount(List<ApplePoisoner.Apple> apples)
+        {
+            var count = apples
+                .Skip(1)
+                .Select((a, index) => new {a.Colour, index})
+                .Count(a => a.Colour == "Green" && apples[a.index-1].Colour == "Green");
+
+            Console.WriteLine($"Times two green apples picked in a row: {count}");
+        }
+
     }
 }
